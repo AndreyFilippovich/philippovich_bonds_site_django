@@ -1,0 +1,27 @@
+from django.http import HttpResponse, HttpResponseNotFound
+from django.shortcuts import render
+from .models import *
+
+menu = ["О сайте", "Добавить статью", "Обратная связь", "Войти"]
+
+
+def index(request):
+    posts = Posts.objects.all()
+    return render(request, 'posts/index.html', {'posts': posts, 'menu': menu, 'title': "Главная страница"})
+
+
+def about(request):
+    return render(request, 'posts/about.html', {'menu': menu, 'title': "О сайте"})
+
+
+def categories(request, category_id):
+    print(request.GET)
+    return HttpResponse(f"<h1>Статья по категориям</h1><p>{category_id}</p>")
+
+
+def archive(request, year):
+    return HttpResponse(f"<h1>Архив по годам</h1><p>{year}</p>")
+
+
+def pageNotFound(request, exception):
+    return HttpResponseNotFound('<h1>Страница не найдена<h1>')

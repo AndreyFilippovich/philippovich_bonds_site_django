@@ -2,25 +2,42 @@ from django.http import HttpResponse, HttpResponseNotFound
 from django.shortcuts import render
 from .models import *
 
-menu = ["О сайте", "Добавить статью", "Обратная связь", "Войти"]
+menu = [{'title': "О сайте", 'url_name': 'about'},
+        {'title': "Добавить статью", 'url_name': 'add_page'},
+        {'title': "Обратная связь", 'url_name': 'contact'},
+        {'title': "Войти", 'url_name': 'login'}
+        ]
+
 
 
 def index(request):
     posts = Posts.objects.all()
-    return render(request, 'posts/index.html', {'posts': posts, 'menu': menu, 'title': "Главная страница"})
+    context = {
+        'posts': posts,
+        'menu': menu,
+        'title': "Главная страница"
+    }
+    return render(request, 'posts/index.html', context=context)
 
 
 def about(request):
     return render(request, 'posts/about.html', {'menu': menu, 'title': "О сайте"})
 
 
-def categories(request, category_id):
-    print(request.GET)
-    return HttpResponse(f"<h1>Статья по категориям</h1><p>{category_id}</p>")
+def addpage(request):
+    return HttpResponse("Добавление статьи")
 
 
-def archive(request, year):
-    return HttpResponse(f"<h1>Архив по годам</h1><p>{year}</p>")
+def contact(request):
+    return HttpResponse("Обратная связь")
+
+
+def login(request):
+    return HttpResponse("Авторизация")
+
+
+def show_post(request, post_id):
+    return HttpResponse(f"Отображение статьи с id = {post_id}")
 
 
 def pageNotFound(request, exception):

@@ -1,4 +1,4 @@
-from django.http import HttpResponse, HttpResponseNotFound
+from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import render
 from .models import *
 
@@ -12,10 +12,14 @@ menu = [{'title': "О сайте", 'url_name': 'about'},
 
 def index(request):
     posts = Posts.objects.all()
+    cats = Category.objects.all()
+
     context = {
         'posts': posts,
+        'cats': cats,
         'menu': menu,
-        'title': "Главная страница"
+        'title': "Главная страница",
+        'cat_selected': 0,
     }
     return render(request, 'posts/index.html', context=context)
 
@@ -36,9 +40,26 @@ def login(request):
     return HttpResponse("Авторизация")
 
 
+def pageNotFound(request, exception):
+    return HttpResponseNotFound('<h1>Страница не найдена<h1>')
+
+
 def show_post(request, post_id):
     return HttpResponse(f"Отображение статьи с id = {post_id}")
 
 
-def pageNotFound(request, exception):
-    return HttpResponseNotFound('<h1>Страница не найдена<h1>')
+def show_category(request, cat_id):
+    posts = Posts.objects.filter(cat_id=cat_id)
+    cats = Category.objects.all()
+
+    if len(posts) == 0:
+        raise Http404()
+
+    context = {
+        'posts': posts,
+        'cats': cats,
+        'menu': menu,
+        'title': "Отображение по рубрикам",
+        'cat_selected': cat_id,
+    }
+    return render(request, 'posts/index.html', context=context)

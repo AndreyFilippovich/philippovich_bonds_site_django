@@ -1,5 +1,5 @@
 from django.http import HttpResponse, HttpResponseNotFound, Http404
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from .models import *
 
 menu = [{'title': "О сайте", 'url_name': 'about'},
@@ -42,8 +42,15 @@ def pageNotFound(request, exception):
     return HttpResponseNotFound('<h1>Страница не найдена<h1>')
 
 
-def show_post(request, post_id):
-    return HttpResponse(f"Отображение статьи с id = {post_id}")
+def show_post(request, post_slug):
+    post = get_object_or_404(Posts, slug=post_slug)
+    context = {
+        'post': post,
+        'menu': menu,
+        'title': post.title,
+        'cat_selected': 1,
+    }
+    return render(request, 'posts/post.html', context=context)
 
 
 def show_category(request, cat_id):

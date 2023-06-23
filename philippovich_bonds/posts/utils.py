@@ -3,13 +3,12 @@ from django.db.models import Count
 from .models import *
 
 
-menu = [{'title': "О сайте", 'url_name': 'about'},
-        {'title': "Добавить статью", 'url_name': 'add_page'},
-        {'title': "Обратная связь", 'url_name': 'contact'},
+menu = [
+            {'title': "Добавить статью", 'url_name': 'add_page'},
         ]
 
 class DataMixin:
-    paginate_by = 3
+    paginate_by = 5
 
     def get_user_context(self, **kwargs):
         context = kwargs
@@ -17,7 +16,7 @@ class DataMixin:
 
         user_menu = menu.copy()
         if not self.request.user.is_authenticated:
-            user_menu.pop(1)
+            user_menu.pop(0)
 
         context['menu'] = user_menu
 

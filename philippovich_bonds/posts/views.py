@@ -29,15 +29,6 @@ class PostsHome(DataMixin, ListView):
         return Posts.objects.filter(is_published=True).select_related('cat')
 
 
-def about(request):
-    contact_list = Posts.objects.all()
-    paginator = Paginator(contact_list, 3)
-
-    page_number = request.GET.get('page')
-    page_obj = paginator.get_page(page_number)
-    return render(request, 'posts/about.html', {'page_obj': page_obj, 'menu': menu, 'title': "О сайте"})
-
-
 class AddPage(LoginRequiredMixin, DataMixin, CreateView):
     form_class = AddPostForm
     template_name = 'posts/addpage.html'
@@ -50,25 +41,6 @@ class AddPage(LoginRequiredMixin, DataMixin, CreateView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title="Добавление статьи")
         return dict(list(context.items()) + list(c_def.items()))
-
-
-class ContactFormView(DataMixin, FormView):
-    form_class = ContactForm
-    template_name = 'posts/contact.html'
-    success_url = reverse_lazy('home')
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Обратная связь")
-        return dict(list(context.items()) + list(c_def.items()))
-
-    def form_valid(self, form):
-        print(form.cleaned_data)
-        return redirect('home')
-
-
-def pageNotFound(request, exception):
-    return HttpResponseNotFound('<h1>Страница не найдена<h1>')
 
 
 class ShowPost(DataMixin, DetailView):
@@ -100,35 +72,63 @@ class PostsCategory(DataMixin, ListView):
         return dict(list(context.items()) + list(c_def.items()))
 
 
-class RegisterUser(DataMixin, CreateView):
-    form_class = RegisterUserForm
-    template_name = 'posts/register.html'
-    success_url = reverse_lazy('login')
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Регистрация")
-        return dict(list(context.items()) + list(c_def.items()))
-    
-    def form_valid(self, form):
-        user = form.save()
-        login(self.request, user)
-        return redirect('home')
+def pageNotFound(request, exception):
+    return HttpResponseNotFound('<h1>Страница не найдена<h1>')
 
 
-class LoginUser(DataMixin, LoginView):
-    form_class = LoginUserForm
-    template_name = 'posts/login.html'
-
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Авторизация")
-        return dict(list(context.items()) + list(c_def.items()))
-    
-    def get_success_url(self):
-        return reverse_lazy('home')
+#def about(request):
+#    contact_list = Posts.objects.all()
+#    paginator = Paginator(contact_list, 3)
+#
+#    page_number = request.GET.get('page')
+#    page_obj = paginator.get_page(page_number)
+#    return render(request, 'posts/about.html', {'page_obj': page_obj, 'menu': menu, 'title': "О сайте"})
 
 
-def logout_user(request):
-    logout(request)
-    return redirect('login')
+#class ContactFormView(DataMixin, FormView):
+#    form_class = ContactForm
+#    template_name = 'posts/contact.html'
+#    success_url = reverse_lazy('home')
+
+#    def get_context_data(self, *, object_list=None, **kwargs):
+#        context = super().get_context_data(**kwargs)
+#        c_def = self.get_user_context(title="Обратная связь")
+#        return dict(list(context.items()) + list(c_def.items()))
+
+#    def form_valid(self, form):
+#        print(form.cleaned_data)
+#        return redirect('home')
+
+
+#class RegisterUser(DataMixin, CreateView):
+#    form_class = RegisterUserForm
+#    template_name = 'posts/register.html'
+#    success_url = reverse_lazy('login')
+
+#    def get_context_data(self, *, object_list=None, **kwargs):
+#        context = super().get_context_data(**kwargs)
+#        c_def = self.get_user_context(title="Регистрация")
+#        return dict(list(context.items()) + list(c_def.items()))
+
+#    def form_valid(self, form):
+#        user = form.save()
+#        login(self.request, user)
+#        return redirect('home')
+
+
+#class LoginUser(DataMixin, LoginView):
+#    form_class = LoginUserForm
+#    template_name = 'posts/login.html'
+
+#    def get_context_data(self, *, object_list=None, **kwargs):
+#        context = super().get_context_data(**kwargs)
+#        c_def = self.get_user_context(title="Авторизация")
+#        return dict(list(context.items()) + list(c_def.items()))
+
+#    def get_success_url(self):
+#        return reverse_lazy('home')
+
+
+#def logout_user(request):
+#    logout(request)
+#    return redirect('login')

@@ -53,6 +53,10 @@ class ShowPost(DataMixin, DetailView):
         context = super().get_context_data(**kwargs)
         c_def = self.get_user_context(title=context['post'])
         return dict(list(context.items()) + list(c_def.items()))
+    
+    def get_queryset(self):
+        return Posts.objects.filter(is_published=True).select_related('cat')
+
 
 
 class PostsCategory(DataMixin, ListView):

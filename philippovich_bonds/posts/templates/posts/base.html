@@ -8,6 +8,11 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<link rel="shortcut icon" href="{% static 'posts/images/icon.png' %}" type="image/x-icon"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link 
+    	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" 
+    	rel="stylesheet"
+    	integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" 
+    	crossorigin="anonymous">
 </head>
 <body>
 <table class="table-page" border=0 cellpadding="0" cellspacing="0">
@@ -27,6 +32,10 @@
 	{% endif %}
 {% endfor %}
 
+{% for m in menu %}
+			<li><a href="{% url m.url_name %}">{{m.title}}</a></li>
+{% endfor %}
+
 <li class="share last"><a href="https://t.me/filippovich_money"><span style="color:#0088cc"><strong>TELEGRAM</strong></span></a></li>
 
 
@@ -36,9 +45,14 @@
 
 
 <!-- Блок контента -->
+
 	<div class="content-text">
 {% block content %}
+
 {% endblock %}
+
+<!-- Блок пагинации -->
+
 {% if page_obj.has_other_pages %}
 <nav class="list-pages">
 	<ul>
@@ -48,7 +62,6 @@
 </li>
 {% endif %}
 
-<!-- Блок пагинации -->
 
 		{% for p in paginator.page_range %}
 		{% if page_obj.number == p %}
@@ -66,12 +79,16 @@
 	</li>
 	{% endif %}
 
-<!-- Конец блока пагинации -->
 
+	
+
+		</ul>
 	</ul>
 </nav>
 {% endif %}
 	</div>
+<!-- Конец блока пагинации -->
+
 <!-- Конец блока контента -->
 
 </td></tr></table>

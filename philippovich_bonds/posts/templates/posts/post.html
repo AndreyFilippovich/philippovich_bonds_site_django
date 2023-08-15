@@ -1,11 +1,33 @@
 {% extends 'posts/base.html' %}
 
 {% block content %}
-<h1>{{post.title}}</h1>
+<div class="container-fluid">
+    <div class="card col-12">
+        <p class="card-header">{{post.title}}</p>
+        <div class="card-body">
+        {% if post.photo %}
+        <p><img class="img-article-left" src="{{post.photo.url}}"></p>
+        {% endif %}
+        
+        {{post.content|linebreaks}}
+        </div>
 
-{% if post.photo %}
-<p><img class="img-article-left" src="{{post.photo.url}}"></p>
-{% endif %}
+    </div>
+</div>
 
-{{post.content|linebreaks}}
+<nav class="list-pages">
+    <ul>
+        {% for p in paginator.page_range %}
+                   {% if page_obj.number == p %}
+        <li class="page-num page-num-selected">{{ p }}</li>
+                   {% else %}
+        <li class="page-num">
+            <a href="?page={{ p }}">{{ p }}</a>
+        </li>
+                   {% endif %}
+        {% endfor %}
+    </ul>
+</nav>
+
 {% endblock %}
+

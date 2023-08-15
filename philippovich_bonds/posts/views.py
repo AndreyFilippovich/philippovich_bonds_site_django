@@ -95,8 +95,10 @@ class PostsCategory(DataMixin, ListView):
         return dict(list(context.items()) + list(c_def.items()))
 
 
-def pageNotFound(request, exception):
-    return HttpResponseNotFound('<h1>Страница не найдена<h1>')
+def page_not_found(request, exception):
+    return render(request, 'posts/404.html', {'path': request.path, 'title': 'Ошибка'}, status=404)
+
+
 
 
 

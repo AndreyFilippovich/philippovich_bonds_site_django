@@ -1,6 +1,7 @@
 {% extends 'posts/base.html' %}
 
 {% block content %}
+
 <div class="container-fluid">
     <div class="card col-12">
         <p class="card-header">{{post.title}}</p>
@@ -11,23 +12,9 @@
         
         {{post.content|linebreaks}}
         </div>
-
     </div>
-</div>
 
-<nav class="list-pages">
-    <ul>
-        {% for p in paginator.page_range %}
-                   {% if page_obj.number == p %}
-        <li class="page-num page-num-selected">{{ p }}</li>
-                   {% else %}
-        <li class="page-num">
-            <a href="?page={{ p }}">{{ p }}</a>
-        </li>
-                   {% endif %}
-        {% endfor %}
-    </ul>
-</nav>
+</div>
 
 {% endblock %}
 

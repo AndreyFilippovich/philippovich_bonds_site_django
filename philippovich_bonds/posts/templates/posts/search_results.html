@@ -1,0 +1,57 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+
+
+<div class="container-fluid">
+
+<form action="{% url 'search_results' %}" method="get">
+    <input name="q" type="text" placeholder="Поиск...">
+
+        <button type="submit">Поиск</button>
+</form>
+
+<br>
+
+{% if object_list %}
+    <main>
+        {% for p in object_list %}
+        
+
+        <br>
+        <div class="card col-12">
+            
+            <p class="card-header">Категория: {{p.cat}}</p>
+            <div class="card-body">
+    
+        <h2 class="card-subtitle">{{p.title}}</h2>
+        <p>
+            
+            {% autoescape on %}
+            {{p.content|linebreaks|truncatewords:10}}
+            {% endautoescape %}
+
+        </P>
+    
+            
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <a href="{{ p.get_absolute_url }}"><p class="btn btn-primary btn-lg">Читать пост</p></a>
+            </div>
+            </div>
+
+        </div>
+
+
+        {% endfor %}
+        <br>
+    </main>
+
+
+{% else %}
+    <h1>Ничего не найдено</h1>
+    <p>Извините, но ничего не соответствует условиям поиска.</p>
+    <p>Пожалуйста, попробуйте еще раз с другими ключевыми словами.</p>
+{% endif %}
+
+
+{% endblock %}

@@ -13,6 +13,7 @@ urlpatterns = [
 #    path('register/', RegisterUser.as_view(), name='register'),
     path('post/<slug:post_slug>/', ShowPost.as_view(), name='post'),
     path('category/<slug:cat_slug>/', PostsCategory.as_view(), name='category'),
+    path('search/', SearchResultsView.as_view(), name='search_results'),
 ]
 
 # path('', cache_page(60)(PostsHome.as_view()), name='home'),

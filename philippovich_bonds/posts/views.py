@@ -1,4 +1,5 @@
 from typing import Any, Dict
+from django.db.models import Q
 from django.db.models.query import QuerySet
 from django.http import HttpResponse, HttpResponseNotFound, Http404
 from django.shortcuts import get_object_or_404, redirect, render
@@ -58,6 +59,24 @@ class ShowPost(DataMixin, DetailView):
         return Posts.objects.filter(is_published=True).select_related('cat')
 
 
+class SearchResultsView(DataMixin, ListView):
+    model = Posts
+    template_name = 'posts/search_results.html'
+    context_object_name = 'post'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        c_def = self.get_user_context(title=context['post'])
+        return dict(list(context.items()) + list(c_def.items()))
+
+    def get_queryset(self):
+        query = self.request.GET.get('q')
+        object_list = Posts.objects.filter(
+            Q(title__icontains=query)
+        )
+        return object_list
+
+
 
 class PostsCategory(DataMixin, ListView):
     model = Posts
@@ -78,6 +97,10 @@ class PostsCategory(DataMixin, ListView):
 
 def pageNotFound(request, exception):
     return HttpResponseNotFound('<h1>Страница не найдена<h1>')
+
+
+
+
 
 
 #def about(request):

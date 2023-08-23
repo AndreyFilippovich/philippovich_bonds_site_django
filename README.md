@@ -11,7 +11,7 @@
 
 ## Переходим в папку проекта:
 
-- cd philippovich_bonds
+- cd philippovich_bonds_site_django
 
 ## Устанавливаем зависимости:
 

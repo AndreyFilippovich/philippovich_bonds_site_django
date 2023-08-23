@@ -9,22 +9,22 @@
 
 - source venv/scripts/activate
 
-# Переходим в папку проекта:
+## Переходим в папку проекта:
 
 - cd philippovich_bonds
 
-# Устанавливаем зависимости:
+## Устанавливаем зависимости:
 
 - pip install -r requirements.txt
 
-# Скачиваем статику:
+## Скачиваем статику:
 
 - python manage.py collectstatic
 
-# Устанавливаем миграции:
+## Устанавливаем миграции:
 
 - python manage.py migrate
 
-# Запускам проект:
+## Запускам проект:
 
 - python manage.py runserver
